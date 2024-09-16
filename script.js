@@ -12,7 +12,7 @@
       // Verificamos si tenemos los valores necesarios
       if (cartId && storeId) {
         // Hacemos la llamada AJAX para enviar el cartId y storeId a tu backend en Bubble
-        fetch('https://mailsqueeze.bubbleapps.io/version-test/api/1.1/wf/checkout/initialize', {
+        fetch('https://mailsqueeze.bubbleapps.io/version-test/api/1.1/wf/checkout/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
