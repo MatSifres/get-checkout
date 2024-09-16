@@ -1,9 +1,13 @@
 (function() {
+  // Esperamos a que la página esté completamente cargada
   window.addEventListener('load', function() {
-    // Aseguramos que el objeto SDKCheckout esté disponible
-    if (window.SDKCheckout && window.SDKCheckout.data) {
-      var cartId = window.SDKCheckout.data.cartId;  // El ID del carrito
-      var storeId = window.SDKCheckout.data.storeId;  // El ID de la tienda
+    // Aseguramos que LS.cart y cartId existan
+    if (typeof LS !== 'undefined' && LS.cart && LS.cart.id) {
+      var cartId = LS.cart.id;  // Capturamos el cartId
+      var storeId = LS.store ? LS.store.id : null;  // Capturamos el storeId si existe
+      
+      console.log("cartId:", cartId);
+      console.log("storeId:", storeId);
 
       // Verificamos si tenemos los valores necesarios
       if (cartId && storeId) {
@@ -25,7 +29,7 @@
         console.error('No se pudo obtener el cartId o storeId');
       }
     } else {
-      console.error('No se encontró el objeto SDKCheckout o sus datos');
+      console.error('No se encontró LS.cart o el cartId');
     }
   });
 })();
