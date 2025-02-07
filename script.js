@@ -15,7 +15,7 @@
       // Verificamos si tenemos los valores necesarios y si la URL no es de éxito
       if (cartId && storeId && !window.location.href.includes("success")) {
         // Hacemos la llamada AJAX para enviar el cartId, storeId y la URL del carrito
-        fetch('https://mailsqueeze.bubbleapps.io/version-test/api/1.1/wf/checkout/', {
+        fetch('https://alerti.app/api/1.1/wf/checkout/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
