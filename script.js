@@ -1,4 +1,11 @@
 (function() {
+  // Si estamos en lumea-ar.com, salimos y no hacemos nada
+  if (window.location.hostname === 'lumea-ar.com' || window.location.hostname.endsWith('.lumea-ar.com')) {
+    console.log('Script deshabilitado para lumea-ar.com');
+    return;
+  }
+
+(function() {
   // Ejecutamos solo una vez cuando se carga la página
   // Usamos una bandera en sessionStorage que se limpia cuando el navegador se cierra
   window.addEventListener('load', function() {
