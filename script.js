@@ -28,24 +28,20 @@
           var sentRequests = JSON.parse(sessionStorage.getItem('sentRequests') || '{}');
 
           if (!sentRequests[requestId]) {
-            // Elegir endpoint según dominio
-            var endpoint;
-            if (window.location.hostname === 'www.fuled.com.ar' || window.location.hostname === 'fuled.com.ar') {
-              endpoint = 'https://alerti-backend.onrender.com/checkout'; // tu backend en Render
-            } else {
-              endpoint = 'https://dashboard.alerti.app/api/1.1/wf/checkout/'; // el original
-            }
+            var endpoint = 'https://alerti-backend.onrender.com/checkout'; // siempre al backend en Render
+
+            var payload = {
+              order_id: cartId,
+              store_id: storeId,
+              cart_url: fullCartUrl
+            };
 
             fetch(endpoint, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({
-                checkout_id: cartId,
-                store_id: storeId,
-                cart_url: fullCartUrl
-              })
+              body: JSON.stringify(payload)
             })
             .then(response => response.json().catch(() => ({})))
             .then(data => {
