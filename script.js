@@ -22,10 +22,11 @@
         var storeId = LS.store ? LS.store.id : null;
         var url = window.location.origin;
         var pathname = LS.cart.pathname || window.location.pathname;
+        var fullCartUrl = url + pathname;
 
         console.log("cartId:", cartId);
         console.log("storeId:", storeId);
-        console.log("URL del carrito:", url + pathname);
+        console.log("URL del carrito:", fullCartUrl);
 
         // Verificamos si tenemos los valores necesarios y si la URL no es de éxito
         if (cartId && storeId && !window.location.href.includes("success")) {
@@ -36,26 +37,40 @@
           var sentRequests = JSON.parse(sessionStorage.getItem('sentRequests') || '{}');
 
           if (!sentRequests[requestId]) {
-            // Hacemos la llamada AJAX
-            fetch('https://dashboard.alerti.app/api/1.1/wf/checkout/', {
+            // Elegir endpoint: Render para fuled, Bubble para los demás
+            var endpoint;
+            var payload;
+            if (window.location.hostname === 'www.fuled.com.ar' || window.location.hostname === 'fuled.com.ar') {
+              endpoint = 'https://alerti-backend.onrender.com/checkout';
+              payload = {
+                order_id: cartId,
+                store_id: storeId,
+                cart_url: fullCartUrl
+              };
+            } else {
+              endpoint = 'https://dashboard.alerti.app/api/1.1/wf/checkout/';
+              payload = {
+                checkout_id: cartId,
+                store_id: storeId,
+                cart_url: fullCartUrl
+              };
+            }
+
+            fetch(endpoint, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({
-                checkout_id: cartId,
-                store_id: storeId,
-                cart_url: url + pathname
-              })
+              body: JSON.stringify(payload)
             })
-            .then(response => response.json())
+            .then(response => response.json().catch(() => ({})))
             .then(data => {
-              console.log('Checkout enviado:', data);
+              console.log('Checkout enviado a', endpoint, data);
               // Marcar como enviado con timestamp
               sentRequests[requestId] = currentTime;
               sessionStorage.setItem('sentRequests', JSON.stringify(sentRequests));
             })
-            .catch(error => console.error('Error enviando checkout:', error));
+            .catch(error => console.error('Error enviando checkout a', endpoint, error));
           } else {
             console.log('Este checkout ya fue enviado recientemente en esta página');
           }
