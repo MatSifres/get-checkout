@@ -1,3 +1,4 @@
+/*
 (function() {
   // Deshabilitar para 'lumea-ar.com'
   if (
@@ -63,6 +64,7 @@
         console.error('No se encontró LS.cart o el cartId');
       }
     } else {
+    */
       console.log('Página recargada muy rápidamente, evitando envío duplicado');
     }
   });
